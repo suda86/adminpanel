@@ -1,0 +1,35 @@
+.list-header {
+  color: #6d6d6e;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+table {
+  width: 750px;
+  margin: 30px auto;
+}
+
+th {
+  background-color:  #1d96b2;
+  height: 30px;
+  text-align: center;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: white;
+}
+
+td {
+  border-bottom: 1px solid  #1d96b2;
+  height: 20px;
+  text-align: center;
+  font-family: sans-serif;
+  font-weight: normal;
+  color: #5e5d52;
+}
+
+.create-venue {
+  margin-left: 600px;
+  margin-top: 20px;
+  font-family: serif;
+  font-weight: bold;
+}

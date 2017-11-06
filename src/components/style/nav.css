@@ -1,0 +1,55 @@
+.nav-bar {
+  width: 810px;
+  display: inline-block;
+  overflow: hidden;
+  background-color: #406094;
+  border-radius: 5px;
+  margin: 10px auto;
+}
+
+.nav-bar-left {
+  width: 460px;
+  display: block;
+  margin: 0 20px;
+  overflow: hidden;
+  float: left;
+}
+
+.nav-bar-right {
+  margin: 0 20px;
+  width: 260px;
+  display: block;
+  float: left;
+}
+
+.nav-bar-link {
+  width: 80px;
+  display: block;
+  float: left;
+  margin-left: 20px;
+  padding: 10px 5px;
+  overflow: hidden;
+}
+
+.signout {
+  display: block;
+  width: 100px;
+  padding: 10px 5px;
+  margin: 0 auto;
+}
+
+.signout-button {
+  width: 90px;
+  height: 25px;
+  border-radius: 3px;
+  background-color: #1d96b2;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.nav-link {
+  font-family: sans-serif;
+  color: white;
+  font-weight: bold;
+}

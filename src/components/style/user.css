@@ -1,0 +1,47 @@
+.user-name {
+  color: #6d6d6e;
+  font-family: serif;
+  text-align: center;
+  font-size: 4em;
+}
+
+.user-profile-container {
+  display: block;
+  width: 600px;
+  margin: 30px auto;
+}
+
+.user-email {
+  color: #939497;
+  text-align: center;
+  margin-top: -50px;
+  font-size: 1.5em;
+  font-family: serif;
+}
+
+.user-image {
+  display: block;
+  width: 250px;
+  margin: 50px auto;
+  border-radius: 7px;
+}
+
+.user-is-active {
+  text-align: center;
+  font-family: serif;
+  color: #6d6d6e;
+  font-size: 2em;
+  font-weight: 600;
+}
+
+.user-activate-deactivate-button {
+  display: block;
+  margin: 10px auto;
+  width: 200px;
+  height: 40px;
+  text-align: center;
+  background-color:  #1d96b2;
+  color: white;
+  font-weight: 800;
+  font-size: 1.2em;
+}

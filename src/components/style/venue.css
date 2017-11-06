@@ -1,0 +1,245 @@
+.venue-map {
+  width: 99%;
+  overflow: hidden;
+  height: 220px;
+  display: block;
+  margin: 10px auto;
+}
+
+.venue-name {
+  color: #6d6d6e;
+  font-family: serif;
+  text-align: center;
+  font-size: 2em;
+}
+
+.venue-pictures {
+  width: 550px;
+  height: 290px;
+  display: block;
+  margin: 10px auto;
+}
+
+.venue-description {
+  border: 1px solid #1d96b2;
+  border-radius: 5px;
+  color: #5e5d52;
+  font-weight: 400;
+  font-family: serif;
+  font-size: 1.2em;
+  padding: 10px;
+}
+
+.venue-informations {
+  color: #1d96b2;
+  font-weight: 500;
+  font-family: serif;
+  text-align: center;
+  font-size: 1.2em;
+  padding: 10px;
+}
+
+.working-day-event {
+  border: 1px solid white;
+  border-radius: 4px;
+  border-collapse: collapse;
+  background-color: rgba(201, 194, 194, 0.979);
+  padding: 25px;
+}
+
+.working-day-name {
+  text-align: center;
+  color: #1d96b2;
+  font-weight: 700;
+  font-family: serif;
+  font-size: 1.1em;
+}
+
+.working-day-picture {
+  display: block;
+  width: 370px;
+  height: 250px;
+  background-color: white;
+  border-radius: 8px;
+  margin: 5px auto;
+}
+
+.working-day-description {
+  font-family: serif;
+  font-size: 1.2em;
+  font-weight: 400;
+  color: #1d96b2;
+  margin: 20px;
+  border: 1px dashed white;
+}
+
+.working-day-link {
+  color: rgb(58, 57, 57);
+  display: block;
+  width: 220px;
+  margin: 5px auto;
+
+}
+
+
+.venue-container {
+  display: block;
+  width: 650px;
+  margin: 0 auto;
+  margin: 30px auto;
+}
+
+.venue-info {
+  color: #3f4042;
+  display: block;
+  width: 350px;
+  float: left;
+}
+
+.media-container {
+  display: block;
+  width: 380px;
+  float: left;
+  margin-left: 15px;
+}
+
+.venue-options {
+  text-align: center;
+  display: block;
+  margin: 5px auto;
+}
+
+.venue-button {
+  height: 30px;
+  margin-left: 10px;
+  background-color: #1d96b2;
+  color: white;
+  font-weight: 700;
+  font-family: serif;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.venue-popup-button {
+  display: block;
+  width: 120px;
+  height: 40px;
+  margin: 5px auto;
+  background: #1d96b2;
+  cursor: pointer;
+  color: #fff;
+  border: 0px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.working-days-popup-button {
+  display: block;
+  margin: 5px auto;
+  background: #1d96b2;
+  width: 214px;
+  padding: 12px;
+  cursor: pointer;
+  color: #fff;
+  border: 0px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  font-size: 17px;
+  transition: all 0.3s ease;
+}
+
+
+.picture {
+  height: 100%;
+  width: 100%;
+}
+
+.days-nav-p {
+  width: 50px;
+  font-family: serif;
+  font-weight: 700;
+  font-size: 1.3em;
+  color: white;
+  background-color: #1d96b2;
+  margin-left: 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.nav {
+  background-color: #406094;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.nav-div {
+  display: block;
+  width: 430px;
+  margin: 5px auto;
+}
+
+.working-day-time {
+  color: #406094;
+  font-family: serif;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.event-date {
+  text-align: center;
+  color: #6d6d6e;
+  font-family: serif;
+  font-weight: 450;
+  font-style: inherit;
+  margin-top: -25px;
+}
+
+.festival-day {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.festival-day-select {
+  width: 100px;
+  height: 30px;
+  display: block;
+  margin: 15px auto;
+  font-family: serif;
+  font-size: 1.2em;
+  font-weight: 600;
+  text-align: center;
+  color:#5d4094
+}
+
+.festival-day-stage {
+  display: block;
+  margin: 3px auto;
+  width: 80%;
+  border-radius: 3px;
+}
+
+.festival-day-stages {
+  display: block;
+  margin: 3px auto;
+  width: 90%;
+  border-radius: 3px;
+  padding: 20px;
+}
+
+.stage-button {
+  width: 100px;
+  height: 30px;
+  background-color: #406094;
+  color: white;
+  display: block;
+  margin: 5px auto;
+  border-radius: 4px;
+  font-family: serif;
+  font-weight: 500;
+  font-size: 1em;
+}
+
