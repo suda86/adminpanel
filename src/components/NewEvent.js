@@ -7,6 +7,8 @@ import FormData from 'form-data';
 import { Redirect } from 'react-router-dom';
 import AddressForm from './Address';
 import moment from 'moment';
+import serverUrl from '../serverUrl'
+import { getToken } from '../utils'
 
 class NewEvent extends Component {
   constructor(props) {
@@ -27,7 +29,7 @@ class NewEvent extends Component {
     let newEvent = {};
     newEvent.name = this.refs.name.value;
     newEvent.description = this.refs.description.value;
-    newEvent.ticket = this.refs.ticket.value;
+    newEvent.ticket = {amount: this.refs.ticket.value, currency: '$'};
     newEvent.headerImage = this.state.pictureUrl;
     newEvent.date = this.refs.date.value;
     newEvent.isActive = this.refs.isactive.checked;
@@ -39,17 +41,10 @@ class NewEvent extends Component {
       streetAddress: this.state.streetAddress,
       zipCode: this.refs.zipcode.value
     };
-    console.log(newEvent);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
       .post(
-        `http://46.101.135.245:8010/api/v1/venue/${this.props.match.params
+        `${serverUrl}venue/${this.props.match.params
           .id}/event`,
         newEvent,
         {
@@ -72,24 +67,15 @@ class NewEvent extends Component {
     let file = e.target.files[0];
     let data = new FormData();
     data.append('photo', file);
-    console.log(data);
-    console.log(file);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .post('http://46.101.135.245:8010/api/v1/upload-image', data, {
+      .post(`${serverUrl}upload-image`, data, {
         headers: {
           Authorization: token
         }
       })
       .then(res => {
         if (res.data.message === 'Successfully uploaded a photo!') {
-          console.log('sasa', res.data);
           let picture = res.data.results;
           this.setState({
             pictureUrl: picture
@@ -180,7 +166,8 @@ class NewEvent extends Component {
           />
           <label className="form-label">Ticket Price: </label>
           <input
-            type="text"
+            type="number"
+            min="0"
             ref="ticket"
             className="input"
             placeholder="Ticket Price"

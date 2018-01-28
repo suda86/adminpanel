@@ -6,35 +6,10 @@ import * as actions from '../actions/actions';
 import FormData from 'form-data';
 import AddressForm from './Address';
 import WorkingHours from './WorkingHours';
-
+import serverUrl from '../serverUrl'
 import './style/form.css';
 import Map from './Map';
-let genres = [
-  'house',
-  'trance',
-  'trap',
-  'top40',
-  'rock',
-  'soca',
-  'techno',
-  'rap',
-  'jazz',
-  'pop',
-  'dubstep',
-  'dance',
-  'blues',
-  'country',
-  'deepHouse',
-  'drum&bass',
-  'funk',
-  'latin',
-  'metal',
-  'live',
-  'punk',
-  'reggae',
-  'r&b',
-  'soul'
-];
+import { getToken, genres } from '../utils'
 
 class NewVenue extends Component {
   constructor(props) {
@@ -90,23 +65,16 @@ class NewVenue extends Component {
       streetAddress: this.state.address,
       zipCode: this.refs.zipcode.value
     };
-    newVenue.ticket = this.refs.ticket.value;
+    newVenue.ticket = {amount: this.refs.ticket.value, currency: '$'};
     newVenue.capacity = this.refs.capacity.value;
     newVenue.placeType = this.refs.placeType.value;
     newVenue.location = {
       coordinates: [this.state.coordinates.lng, this.state.coordinates.lat]
     };
 
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
-    console.log(newVenue);
+    let token = getToken(this.props.signOut)
     axios
-      .post('http://46.101.135.245:8010/api/v1/venue', newVenue, {
+      .post(`${serverUrl}venue`, newVenue, {
         headers: {
           Authorization: token
         }
@@ -125,24 +93,15 @@ class NewVenue extends Component {
     let file = e.target.files[0];
     let data = new FormData();
     data.append('photo', file);
-    console.log(data);
-    console.log(file);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .post('http://46.101.135.245:8010/api/v1/upload-image', data, {
+      .post(`${serverUrl}upload-image`, data, {
         headers: {
           Authorization: token
         }
       })
       .then(res => {
         if (res.data.message === 'Successfully uploaded a photo!') {
-          console.log('sasa', res.data);
           let picture = res.data.results;
           this.setState({
             pictureUrl: picture
@@ -181,8 +140,6 @@ class NewVenue extends Component {
 
   handleTimeChange(value, num, prop) {
     let hours = this.state.workingHours;
-    console.log(num);
-    console.log(value);
     hours[num][prop] = value;
     this.setState({
       workingHours: hours
@@ -218,7 +175,8 @@ class NewVenue extends Component {
           />
           <label className="form-label">Ticket Price: </label>
           <input
-            type="text"
+            type="number"
+            min='0'
             ref="ticket"
             className="input"
             placeholder="Ticket Price"

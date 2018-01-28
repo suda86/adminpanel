@@ -9,24 +9,24 @@ class Users extends Component {
     this.props.fetchUsers();
   }
 
+  renderUsers() {
+    let users = this.props.users;
+    return users.map((user, i) => {
+      return (
+        <tr key={i}>
+          <td>{i + 1 + '.'}</td>
+          <td>{user.email}</td>
+          <td>{user.firstName}</td>
+          <td>{user.lastName}</td>
+          <td>{user.isActive ? 'Yes' : 'No'}</td>
+          <td>
+            <Link to={`/dashboard/user/${user._id}`}>View</Link>
+          </td>
+        </tr>
+      );
+    });
+  }
   render() {
-    function renderUsers() {
-      let users = this.props.users;
-      return users.map((user, i) => {
-        return (
-          <tr key={i}>
-            <td>{i + 1 + '.'}</td>
-            <td>{user.email}</td>
-            <td>{user.firstName}</td>
-            <td>{user.lastName}</td>
-            <td>{user.isActive ? 'Yes' : 'No'}</td>
-            <td>
-              <Link to={`/dashboard/user/${user._id}`}>View</Link>
-            </td>
-          </tr>
-        );
-      });
-    }
     return (
       <div>
         <h1 className="list-header">Users List</h1>
@@ -40,7 +40,7 @@ class Users extends Component {
               <th>Is Active</th>
               <th>Action</th>
             </tr>
-            {renderUsers.bind(this)()}
+            {this.renderUsers()}
           </tbody>
         </table>
       </div>

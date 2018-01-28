@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/actions';
 import AddressForm from './Address';
 import moment from 'moment';
+import serverUrl from '../serverUrl';
+import { getToken } from '../utils'
 
 class EditEvent extends Component {
   constructor(props) {
@@ -32,15 +34,9 @@ class EditEvent extends Component {
 
   componentDidMount() {
     let id = this.props.match.params.id;
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .get(`http://46.101.135.245:8010/api/v1/event/${id}`, {
+      .get(`${serverUrl}event/${id}`, {
         headers: {
           Authorization: token
         }
@@ -59,7 +55,7 @@ class EditEvent extends Component {
           zipCode: res.data.results.address
             ? res.data.results.address.zipCode
             : undefined,
-          ticket: res.data.results.ticket,
+          ticket: res.data.results.ticket.amount,
           isActive: res.data.results.isActive,
           isRecurrent: res.data.results.isRecurrent,
           date: res.data.results.date,
@@ -77,24 +73,15 @@ class EditEvent extends Component {
     let file = e.target.files[0];
     let data = new FormData();
     data.append('photo', file);
-    console.log(data);
-    console.log(file);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .post('http://46.101.135.245:8010/api/v1/upload-image', data, {
+      .post(`${serverUrl}upload-image`, data, {
         headers: {
           Authorization: token
         }
       })
       .then(res => {
         if (res.data.message === 'Successfully uploaded a photo!') {
-          console.log('sasa', res.data);
           let picture = res.data.results;
           this.setState({
             pictureUrl: picture
@@ -125,25 +112,17 @@ class EditEvent extends Component {
       streetAddress: this.state.streetAddress,
       zipCode: this.state.zipCode
     };
-    newEvent.ticket = this.state.ticket;
+    newEvent.ticket = {amount: this.state.ticket, currency: '$'};
     newEvent.isActive = this.state.isActive;
     newEvent.isRecurrent = this.state.isRecurrent;
     newEvent.location = {
       coordinates: [this.state.coordinates.lng, this.state.coordinates.lat]
     };
     newEvent.headerImage = this.state.pictureUrl
-    console.log(newEvent);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
       .put(
-        `http://46.101.135.245:8010/api/v1/venue/${this.state
-          .venueId}/event/${this.props.match.params.id}`,
+        `${serverUrl}venue/${this.state.venueId}/event/${this.props.match.params.id}`,
         newEvent,
         {
           headers: {
@@ -152,7 +131,6 @@ class EditEvent extends Component {
         }
       )
       .then(res => {
-        console.log(res.data);
         this.setState({
           fireRedirect: true
         });
@@ -173,7 +151,6 @@ class EditEvent extends Component {
   } 
 
   render() {
-    console.log(this.state.date ? this.state.date.slice(0, 10) : 'nula');
     function renderForm() {
       let loaded = this.state.isLoaded;
       if (loaded) {
@@ -259,7 +236,8 @@ class EditEvent extends Component {
               />
               <label className="form-label">Ticket: </label>
               <input
-                type="text"
+                type="number"
+                min="0"
                 ref="ticket"
                 className="input"
                 placeholder="Ticket Price"

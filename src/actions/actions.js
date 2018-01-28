@@ -1,4 +1,6 @@
 import axios from 'axios';
+import serverUrl from '../serverUrl'
+import { getToken } from '../utils'
 
 export function signIn() {
   return {
@@ -22,7 +24,7 @@ export function loginError(message) {
 export function login(email, password) {
   return function(dispatch) {
     axios
-      .post('http://46.101.135.245:8010/api/v1/super-admin/login', {
+      .post(`${serverUrl}super-admin/login`, {
         email,
         password
       })
@@ -43,15 +45,9 @@ export function login(email, password) {
 
 export function fetchUsers() {
   return function fetch(dispatch) {
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return signOut();
-    }
+    let token = getToken(signOut)
     axios
-      .get('http://46.101.135.245:8010/api/v1/users', {
+      .get(`${serverUrl}users`, {
         headers: {
           Authorization: token
         }
@@ -71,18 +67,12 @@ export function fetchUsers() {
 
 export function fetchEvents(id) {
   return function fetchEv(dispatch) {
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return signOut();
-    }
+    let token = getToken(signOut)
     let link;
     if (!id) {
-      link = `http://46.101.135.245:8010/api/v1/events`;
+      link = `${serverUrl}events`;
     } else {
-      link = `http://46.101.135.245:8010/api/v1/venue/${id}/events`;
+      link = `${serverUrl}venue/${id}/events`;
     }
     axios
       .get(link, {
@@ -105,15 +95,9 @@ export function fetchEvents(id) {
 
 export function fetchVenues() {
   return function fetchVe(dispatch) {
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return signOut();
-    }
+    let token = getToken(signOut)
     axios
-      .get('http://46.101.135.245:8010/api/v1/venues', {
+      .get(`${serverUrl}venues`, {
         headers: {
           Authorization: token
         }

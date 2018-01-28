@@ -36,7 +36,7 @@ export default class FestivalInfoPopup extends Component {
                 <div className="white_content">
                     <h2 className="venue-name">{this.props.data.name}</h2>
                     <h4 className="event-date" >{moment(this.props.data.dateFrom).format('dddd, MMMM Do YYYY')} - {moment(this.props.data.dateTo).format('dddd, MMMM Do YYYY')}</h4>
-                    {this.props.data.packageTicket ? <p className="venue-informations">Package ticket price is {this.props.data.packageTicket}</p> : <p className="venue-informations">There is not package ticket price for this festival</p>}
+                    {this.props.data.packageTicket.amount ? <p className="venue-informations">Package ticket price is {this.props.data.packageTicket.amount}{this.props.data.packageTicket.currency}</p> : <p className="venue-informations">There is not package ticket price for this festival</p>}
                     <select className="festival-day-select" onChange={this.onSelectDayChange.bind(this)}>
                         {this.props.data.days.map((festivalDay, i) => {
                             return (
@@ -58,6 +58,7 @@ export default class FestivalInfoPopup extends Component {
                         <h2 className="venue-name">{this.props.data.days[this.state.currentDay].name}</h2>
                         <h4 className="event-date" >{moment(this.props.data.days[this.state.currentDay].date).format('dddd, MMMM Do YYYY')}</h4>
                         {this.props.data.days[this.state.currentDay].hour ? <h4 className="event-date" >Starting at {this.props.data.days[this.state.currentDay].hour}h</h4> : <p></p>}
+                        {this.props.data.days[this.state.currentDay].ticket.amount ? <h4 className="event-date" >Daily ticket {this.props.data.days[this.state.currentDay].ticket.amount}{this.props.data.days[this.state.currentDay].ticket.currency}</h4> : <p></p>}
                         {this.props.data.days[this.state.currentDay].headerImage ? <div className="venue-pictures">
                         <img
                             className="picture"

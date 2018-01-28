@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/actions';
 import './style/user.css';
 import axios from 'axios';
+import serverUrl from '../serverUrl'
+import { getToken } from '../utils'
 
 class UserProfile extends Component {
   constructor(props) {
@@ -14,14 +16,8 @@ class UserProfile extends Component {
   }
   componentDidMount() {
     let id = this.props.match.params.id;
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if(storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
-    axios.get(`http://46.101.135.245:8010/api/v1/user/${id}`, {
+    let token = getToken(this.props.signOut)
+    axios.get(`${serverUrl}user/${id}`, {
       headers: {
         "Authorization": token
       }
@@ -40,14 +36,8 @@ class UserProfile extends Component {
 
   disableUser() {
     let id = this.props.match.params.id;
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if(storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
-    axios.patch(`http://46.101.135.245:8010/api/v1/user/${id}/disable`, null, {
+    let token = getToken(this.props.signOut)
+    axios.patch(`${serverUrl}user/${id}/disable`, null, {
       headers: {
         "Authorization": token
       }
@@ -68,14 +58,8 @@ class UserProfile extends Component {
 
   enableUser() {
     let id = this.props.match.params.id;
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if(storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
-    axios.patch(`http://46.101.135.245:8010/api/v1/user/${id}/enable`,null,  {
+    let token = getToken(this.props.signOut)
+    axios.patch(`${serverUrl}user/${id}/enable`,null,  {
       headers: {
         "Authorization": token
       }
@@ -97,7 +81,6 @@ class UserProfile extends Component {
   render() {
     function renderUserInfo() {
       let userInfo = this.state.userInfo;
-      console.log(userInfo);
       if(userInfo) {
         return (
           <div className="user-profile-container">

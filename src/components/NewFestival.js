@@ -8,6 +8,8 @@ import { Redirect } from 'react-router-dom';
 import AddressForm from './Address';
 import moment from 'moment';
 import DayPopup from './DayPopup';
+import serverUrl from '../serverUrl'
+import { getToken } from '../utils'
 
 class NewEvent extends Component {
   constructor(props) {
@@ -34,7 +36,7 @@ class NewEvent extends Component {
           isActive: true,
           hour: '20',
           headerImage: '',
-          ticket: '',
+          ticket: {amount: 0, currency: '$'},
           address: {
             streetAddress: 'Toronto, ON',
             zipCode: ''
@@ -58,7 +60,7 @@ class NewEvent extends Component {
     newFestival.dateTo = this.state.dateTo;
     newFestival.isActive = this.refs.isactive.checked;
     newFestival.headerImage = this.state.pictureUrl;    
-    newFestival.packageTicket = this.refs.ticket.value;
+    newFestival.packageTicket = {amount: this.refs.ticket.value, currency: '$'};
     newFestival.address = {
       streetAddress: this.state.streetAddress,
       zipCode: this.refs.zipcode.value
@@ -67,7 +69,6 @@ class NewEvent extends Component {
       coordinates: [this.state.coordinates.lng, this.state.coordinates.lat]
     };
     newFestival.days = this.state.days;
-    console.log(newFestival);
     for(let i = 0; i < newFestival.days.length; i ++) {
       if (!newFestival.days[i].entered) {
         return this.setState({
@@ -75,16 +76,9 @@ class NewEvent extends Component {
         })
       }
     }
-    console.log(newFestival);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .post(`http://46.101.135.245:8010/api/v1/festival`, newFestival, {
+      .post(`${serverUrl}festival`, newFestival, {
         headers: {
           Authorization: token
         }
@@ -103,24 +97,15 @@ class NewEvent extends Component {
     let file = e.target.files[0];
     let data = new FormData();
     data.append('photo', file);
-    console.log(data);
-    console.log(file);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .post('http://46.101.135.245:8010/api/v1/upload-image', data, {
+      .post(`${serverUrl}upload-image`, data, {
         headers: {
           Authorization: token
         }
       })
       .then(res => {
         if (res.data.message === 'Successfully uploaded a photo!') {
-          console.log('sasa', res.data);
           let picture = res.data.results;
           this.setState({
             pictureUrl: picture
@@ -168,7 +153,7 @@ class NewEvent extends Component {
           hour: '20',
           isActive: true,
           headerImage: '',
-          ticket: '',
+          ticket: {amount: 0, currency: '$'},
           address: {
             streetAddress: '',
             zipCode: ''
@@ -193,7 +178,7 @@ class NewEvent extends Component {
       hour: '20',
       isActive: true,
       headerImage: '',
-      ticket: '',
+      ticket: {amount: 0, currency: '$'},
       address: {
         streetAddress: '',
         zipCode: ''
@@ -213,7 +198,7 @@ class NewEvent extends Component {
         hour: '20',
         isActive: true,
         headerImage: '',
-        ticket: '',
+        ticket: {amount: 0, currency: '$'},
         address: {
           streetAddress: '',
           zipCode: ''
@@ -247,7 +232,7 @@ class NewEvent extends Component {
       hour: '20',
       isActive: true,
       headerImage: '',
-      ticket: '',
+      ticket: {amount: 0, currency: '$'},
       address: {
         streetAddress: '',
         zipCode: ''
@@ -380,7 +365,8 @@ class NewEvent extends Component {
           />
           <label className="form-label">Package Ticket: </label>
           <input
-            type="text"
+            type="number"
+            min="0"
             ref="ticket"
             className="input"
             placeholder="Package Ticket Price"

@@ -8,6 +8,8 @@ import { Redirect } from 'react-router-dom';
 import AddressForm from './Address';
 import moment from 'moment';
 import DayPopup from './DayPopup';
+import serverUrl from '../serverUrl';
+import { getToken } from '../utils'
 
 class NewEvent extends Component {
   constructor(props) {
@@ -54,15 +56,9 @@ class NewEvent extends Component {
 
   componentDidMount() {
     let id = this.props.match.params.id;
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .get(`http://46.101.135.245:8010/api/v1/festival/${id}`, {
+      .get(`${serverUrl}festival/${id}`, {
         headers: {
           Authorization: token
         }
@@ -81,7 +77,7 @@ class NewEvent extends Component {
           dateTo: moment(res.data.results.dateTo).format('YYYY-MM-DD'),
           name: res.data.results.name,
           days: days,
-          packageTicket: res.data.results.packageTicket,
+          packageTicket: res.data.results.packageTicket.amount,
           isActive: res.data.results.isActive,
           description: res.data.results.description
         });
@@ -106,7 +102,7 @@ class NewEvent extends Component {
     newFestival.dateTo = this.state.dateTo;
     newFestival.isActive = this.state.isActive;
     newFestival.headerImage = this.state.pictureUrl;    
-    newFestival.packageTicket = this.state.packageTicket;
+    newFestival.packageTicket = {amount: this.state.packageTicket, currency: "$"};
     newFestival.address = {
       streetAddress: this.state.streetaddress,
       zipCode: this.state.zipCode
@@ -122,16 +118,9 @@ class NewEvent extends Component {
         })
       }
     }
-    console.log(newFestival);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .put(`http://46.101.135.245:8010/api/v1/festival/${this.props.match.params.id}`, newFestival, {
+      .put(`${serverUrl}festival/${this.props.match.params.id}`, newFestival, {
         headers: {
           Authorization: token
         }
@@ -150,24 +139,15 @@ class NewEvent extends Component {
     let file = e.target.files[0];
     let data = new FormData();
     data.append('photo', file);
-    console.log(data);
-    console.log(file);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .post('http://46.101.135.245:8010/api/v1/upload-image', data, {
+      .post(`${serverUrl}upload-image`, data, {
         headers: {
           Authorization: token
         }
       })
       .then(res => {
         if (res.data.message === 'Successfully uploaded a photo!') {
-          console.log('sasa', res.data);
           let picture = res.data.results;
           this.setState({
             pictureUrl: picture
@@ -435,7 +415,8 @@ class NewEvent extends Component {
           />
           <label className="form-label">Package Ticket: </label>
           <input
-            type="text"
+            type="number"
+            min="0"
             value={this.state.packageTicket}
             onChange={(e) => this.setState({packageTicket: e.target.value})}
             className="input"

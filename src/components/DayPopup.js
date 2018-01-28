@@ -5,6 +5,8 @@ import FormData from 'form-data';
 import AddressForm from './Address';
 import './style/form.css';
 import moment from 'moment';
+import serverUrl from '../serverUrl'
+import { getToken } from '../utils'
 
 export default class DayPopup extends Component {
   constructor(props) {
@@ -22,7 +24,7 @@ export default class DayPopup extends Component {
       pictureUrl: props.data.headerImage,
       isActive: props.data.isActive,
       name: props.data.name,
-      ticket: props.data.ticket
+      ticket: props.data.ticket.amount
     };
   }
 
@@ -39,7 +41,7 @@ export default class DayPopup extends Component {
     dayInfo.hour = this.state.hour;
     dayInfo.name = this.state.name;
     dayInfo.description = this.state.description;
-    dayInfo.ticket = this.state.ticket;
+    dayInfo.ticket = {amount: this.state.ticket, currency: '$'};
     dayInfo.headerImage = this.state.pictureUrl;
     dayInfo.isActive = this.state.isActive;
     dayInfo.location = {
@@ -58,31 +60,21 @@ export default class DayPopup extends Component {
     dayInfo.stages = stages;
     this.props.addDay(dayInfo, this.props.data.day);
     this.props.closePopup();
-    console.log(dayInfo);
   }
  
   onPictureSelect(e) {
     let file = e.target.files[0];
     let data = new FormData();
     data.append('photo', file);
-    console.log(data);
-    console.log(file);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .post('http://46.101.135.245:8010/api/v1/upload-image', data, {
+      .post(`${serverUrl}upload-image`, data, {
         headers: {
           Authorization: token
         }
       })
       .then(res => {
         if (res.data.message === 'Successfully uploaded a photo!') {
-          console.log('sasa', res.data);
           let picture = res.data.results;
           this.setState({
             pictureUrl: picture
@@ -190,7 +182,8 @@ export default class DayPopup extends Component {
           />
           <label className="form-label">Ticket Price: </label>
           <input
-            type="text"
+            type="number"
+            min="0"
             value={this.state.ticket}
             onChange={(e) => this.setState({ticket: e.target.value})}
             className="input"

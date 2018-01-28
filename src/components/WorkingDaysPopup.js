@@ -13,7 +13,6 @@ export default class WorkingDaysPopup extends Component {
     }
   }
   render() {
-    console.log(this.state.day);
     function renderDayEvents(day) {
         let dayEvents = this.props.data.filter((workingDay) => {
           return moment(workingDay.date).day() === day;

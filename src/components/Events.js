@@ -10,23 +10,28 @@ class Events extends Component {
     this.props.fetchEvents(this.props.match.params.id);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.match.params.id !== this.props.match.params.id) this.props.fetchEvents(nextProps.match.params.id);
+  }
+
+  renderEvents() {
+    let events = this.props.events;
+    return events.map((event, i) => {
+      return (
+        <tr key={i}>
+          <td>{i + 1 + '.'}</td>
+          <td>{event.name}</td>
+          <td>{moment(event.date).format('YYYY-MM-DD')}</td>
+          <td>{event.isActive ? 'Yes' : 'No'}</td>
+          <td>
+            <Link to={`/dashboard/event/${event._id}`}>View/Edit</Link>
+          </td>
+        </tr>
+      );
+    });
+  }
+
   render() {
-    function renderEvents() {
-      let events = this.props.events;
-      return events.map((event, i) => {
-        return (
-          <tr key={i}>
-            <td>{i + 1 + '.'}</td>
-            <td>{event.name}</td>
-            <td>{moment(event.date).format('YYYY-MM-DD')}</td>
-            <td>{event.isActive ? 'Yes' : 'No'}</td>
-            <td>
-              <Link to={`/dashboard/event/${event._id}`}>View/Edit</Link>
-            </td>
-          </tr>
-        );
-      });
-    }
     return (
       <div>
         <h1 className="list-header">Events List</h1>
@@ -39,7 +44,7 @@ class Events extends Component {
               <th>Is Active</th>
               <th>Action</th>
             </tr>
-            {renderEvents.bind(this)()}
+            {this.renderEvents()}
           </tbody>
         </table>
       </div>

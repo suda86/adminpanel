@@ -14,7 +14,7 @@ export default (props) => {
         {props.data.website ? <p className="venue-informations">Website is {props.data.website}</p> : <p></p>}
         <p className="venue-informations">This is {props.data.dressCode ? props.data.dressCode  : 'free'} dress code place, it {props.data.lgbt ? 'is' : 'is not'} LGBT and there is {props.data.happyHours ? '' : 'not'} happy hours</p>
         {props.data.placeType ? <p className="venue-informations">The place type is {props.data.placeType}</p> : <p></p>}
-        {props.data.ticket ? <p className="venue-informations">Default ticket price is {props.data.ticket}</p> : <p className="venue-informations">There is not default tickets for tis place</p>}
+        {props.data.ticket ? <p className="venue-informations">Default ticket price is {props.data.ticket.amount}{props.data.ticket.currency}</p> : <p className="venue-informations">There is not default tickets for tis place</p>}
         {props.data.minAge ? <p className="venue-informations">Min age is {props.data.minAge}</p> : <p></p>}
         <p className="venue-informations">You can listen next genres in this venue: {props.data.genres.length > 0 ? props.data.genres.map(genre => `${genre}, ` ) : ''}</p>
         

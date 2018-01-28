@@ -13,7 +13,6 @@ export default class WorkingDaysPopup extends Component {
   }
 
   render() {
-    console.log(this.props.data);
     function styleNumber(n) {
         if(n < 10) {
             return '0' + n
@@ -22,8 +21,6 @@ export default class WorkingDaysPopup extends Component {
     }
     function renderDayEvents(day) {
         let dayhours = this.props.data[this.state.day - 1];
-        console.log(dayhours);
-        console.log(this.state.day - 1);
         if(dayhours.from === 1 && dayhours.to === 1) {
           return (
             <div className="working-day-event">

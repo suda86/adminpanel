@@ -5,6 +5,8 @@ import * as actions from '../actions/actions';
 import './style/lists.css';
 import axios from 'axios';
 import moment from 'moment';
+import serverUrl from '../serverUrl'
+import { getToken } from '../utils'
 
 class Festivals extends Component {
   constructor(props) {
@@ -14,15 +16,9 @@ class Festivals extends Component {
     };
   }
   componentDidMount() {
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .get(`http://46.101.135.245:8010/api/v1/admin/festivals`, {
+      .get(`${serverUrl}admin/festivals`, {
         headers: {
           Authorization: token
         }
@@ -38,25 +34,25 @@ class Festivals extends Component {
       });
   }
 
+  renderFestivals() {
+    let festivals = this.state.festivals;
+    return festivals.map((festival, i) => {
+      return (
+        <tr key={i}>
+          <td>{i + 1 + '.'}</td>
+          <td>{festival.name}</td>
+          <td>{moment(festival.dateFrom).format('YYYY-MM-DD')}</td>
+          <td>{moment(festival.dateTo).format('YYYY-MM-DD')}</td>
+          <td>{festival.isActive ? 'Yes' : 'No'}</td>
+          <td>
+            <Link to={`/dashboard/festival/${festival._id}`}>View/Edit</Link>
+          </td>
+        </tr>
+      );
+    });
+  }
+
   render() {
-    function renderFestivals() {
-      let festivals = this.state.festivals;
-      console.log(festivals);
-      return festivals.map((festival, i) => {
-        return (
-          <tr key={i}>
-            <td>{i + 1 + '.'}</td>
-            <td>{festival.name}</td>
-            <td>{moment(festival.dateFrom).format('YYYY-MM-DD')}</td>
-            <td>{moment(festival.dateTo).format('YYYY-MM-DD')}</td>
-            <td>{festival.isActive ? 'Yes' : 'No'}</td>
-            <td>
-              <Link to={`/dashboard/festival/${festival._id}`}>View/Edit</Link>
-            </td>
-          </tr>
-        );
-      });
-    }
     return (
       <div>
         <h1 className="list-header">All Festivals</h1>
@@ -73,7 +69,7 @@ class Festivals extends Component {
               <th>Is Active</th>
               <th>Action</th>
             </tr>
-            {renderFestivals.bind(this)()}
+            {this.renderFestivals()}
           </tbody>
         </table>
       </div>

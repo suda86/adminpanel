@@ -7,33 +7,8 @@ import WorkingHours from './WorkingHours';
 import './style/form.css';
 import Map from './Map';
 import AddressForm from './Address';
-
-let genres = [
-  'house',
-  'trance',
-  'trap',
-  'top40',
-  'rock',
-  'soca',
-  'techno',
-  'rap',
-  'jazz',
-  'pop',
-  'dubstep',
-  'dance',
-  'blues',
-  'country',
-  'deepHouse',
-  'drum&bass',
-  'funk',
-  'latin',
-  'metal',
-  'live',
-  'punk',
-  'reggae',
-  'r&b',
-  'soul'
-];
+import serverUrl from '../serverUrl';
+import { getToken, genres } from '../utils'
 
 class EditVenue extends Component {
   constructor(props) {
@@ -77,15 +52,9 @@ class EditVenue extends Component {
 
   componentDidMount() {
     let id = this.props.match.params.id;
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .get(`http://46.101.135.245:8010/api/v1/venue/${id}`, {
+      .get(`${serverUrl}venue/${id}`, {
         headers: {
           Authorization: token
         }
@@ -114,7 +83,7 @@ class EditVenue extends Component {
           city: res.data.results.city,
           phoneNumber: res.data.results.phoneNumber,
           minAge: res.data.results.minAge,
-          ticket: res.data.results.ticket,
+          ticket: res.data.results.ticket.amount,
           dressCode: res.data.results.dressCode,
           description: res.data.results.description,
           workingHours: res.data.results.workingHours,
@@ -130,24 +99,15 @@ class EditVenue extends Component {
     let file = e.target.files[0];
     let data = new FormData();
     data.append('photo', file);
-    console.log(data);
-    console.log(file);
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
+    let token = getToken(this.props.signOut)
     axios
-      .post('http://46.101.135.245:8010/api/v1/upload-image', data, {
+      .post(`${serverUrl}upload-image`, data, {
         headers: {
           Authorization: token
         }
       })
       .then(res => {
         if (res.data.message === 'Successfully uploaded a photo!') {
-          console.log('sasa', res.data);
           let picture = res.data.results;
           this.setState({
             pictureUrl: picture
@@ -185,7 +145,7 @@ class EditVenue extends Component {
       streetAddress: this.state.streetAddress,
       zipCode: this.refs.zipcode.value
     };
-    newVenue.ticket = this.refs.ticket.value;
+    newVenue.ticket = {amount: this.refs.ticket.value, currency: '$'};
     newVenue.capacity = this.refs.capacity.value;
     newVenue.placeType = this.refs.placeType.value;
     newVenue.workingHours = this.state.workingHours;
@@ -194,17 +154,10 @@ class EditVenue extends Component {
       coordinates: [this.state.coordinates.lng, this.state.coordinates.lat],
       type: 'Point'
     };
-    const storage = JSON.parse(localStorage.getItem('adminpanel'));
-    let token;
-    if (storage) {
-      token = 'Bearer ' + storage.token;
-    } else {
-      return this.props.signOut();
-    }
-    console.log(newVenue);
+    let token = getToken(this.props.signOut)
     axios
       .put(
-        `http://46.101.135.245:8010/api/v1/venue/${this.props.match.params.id}`,
+        `${serverUrl}venue/${this.props.match.params.id}`,
         newVenue,
         {
           headers: {
@@ -249,8 +202,6 @@ class EditVenue extends Component {
 
   handleTimeChange(value, num, prop) {
     let hours = this.state.workingHours;
-    console.log(num);
-    console.log(value);
     hours[num][prop] = value;
     this.setState({
       workingHours: hours
@@ -302,7 +253,7 @@ class EditVenue extends Component {
               />
               <label className="form-label">Ticket Price: </label>
               <input
-                type="text"
+                type="number"
                 ref="ticket"
                 className="input"
                 placeholder="Ticket Price"

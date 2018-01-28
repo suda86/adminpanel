@@ -9,24 +9,25 @@ class Venues extends Component {
     this.props.fetchVenues();
   }
 
+  renderVenues() {
+    let venues = this.props.venues;
+    return venues.map((venue, i) => {
+      return (
+        <tr key={i}>
+          <td>{i + 1 + '.'}</td>
+          <td>{venue.name}</td>
+          <td>{venue.website}</td>
+          <td>{venue.city}</td>
+          <td>{venue.phoneNumber}</td>
+          <td>
+            <Link to={`/dashboard/venue/${venue._id}`}>View/Edit</Link>
+          </td>
+        </tr>
+      );
+    });
+  }
+
   render() {
-    function renderVenues() {
-      let venues = this.props.venues;
-      return venues.map((venue, i) => {
-        return (
-          <tr key={i}>
-            <td>{i + 1 + '.'}</td>
-            <td>{venue.name}</td>
-            <td>{venue.website}</td>
-            <td>{venue.city}</td>
-            <td>{venue.phoneNumber}</td>
-            <td>
-              <Link to={`/dashboard/venue/${venue._id}`}>View/Edit</Link>
-            </td>
-          </tr>
-        );
-      });
-    }
     return (
       <div>
         <h1 className="list-header">Venues List</h1>
@@ -43,7 +44,7 @@ class Venues extends Component {
               <th>Phone</th>
               <th>Action</th>
             </tr>
-            {renderVenues.bind(this)()}
+            {this.renderVenues()}
           </tbody>
         </table>
       </div>

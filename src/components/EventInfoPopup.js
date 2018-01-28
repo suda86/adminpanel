@@ -8,7 +8,7 @@ export default (props) => {
         <h2 className="venue-name">{props.data.name}</h2>
         {props.data.address.streetAddress ? <p className="venue-informations">{props.data.address.streetAddress}</p> : <p className="venue-informations">unknown address</p>}
         {props.data.address.zipCode ? <p className="venue-informations">{props.data.address.zipCode}</p> : <p></p>}
-        {props.data.ticket ? <p className="venue-informations">Ticket price is {props.data.ticket}</p> : <p className="venue-informations">There are not default tickets for this place</p>}
+        {props.data.ticket.amount ? <p className="venue-informations">Ticket price is {props.data.ticket.amount}{props.data.ticket.currency}</p> : <p className="venue-informations">There are not default tickets for this place</p>}
         <p className="venue-informations">This is {props.data.isRecurrent ? 'recurrent' : 'not recurrent'} event</p>
         <button className="venue-popup-button" onClick={() => props.closePopup()}>Close</button>
       </div>   
