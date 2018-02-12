@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { getToken } from '../utils';
+import serverUrl from '../serverUrl';
 import * as actions from '../actions/actions';
 import './style/lists.css';
 
 class Venues extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      message: ''
+    }
+  }
   componentDidMount() {
     this.props.fetchVenues();
   }
@@ -27,10 +36,40 @@ class Venues extends Component {
     });
   }
 
+  onFileSelect(e) {
+    let file = e.target.files[0];
+    let data = new FormData();
+    data.append('venueFile', file);
+    let token = getToken(this.props.signOut)
+    axios
+      .post(`${serverUrl}venue/import`, data, {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(res => {
+        if (res.data.message === 'Venues imported successfully') {
+          this.props.fetchVenues();
+          this.setState({
+            message: 'successiful'
+          });
+          setTimeout(() => {
+            this.setState({message: ''})
+          }, 4000)
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
   render() {
     return (
       <div>
         <h1 className="list-header">Venues List</h1>
+        <label htmlFor="csv">Import csv file: </label>
+        <input name="csv" type="file" accept=".csv" onChange={this.onFileSelect.bind(this)}/>
+        <p>{this.state.message}</p>
         <h3 className="create-venue" >
           <Link to={`/dashboard/newvenue`}>Create New Venue</Link>
         </h3>
