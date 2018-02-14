@@ -167,12 +167,14 @@ class NewVenue extends Component {
             placeholder="Capacity"
           />
           <label className="form-label">Place Type: </label>
-          <input
-            type="text"
-            ref="placeType"
-            className="input"
-            placeholder="Place Type"
-          />
+          <select ref="placeType" className="input">
+            <option value="" disabled selected>
+              placeType
+            </option>
+            <option>Bar</option>
+            <option>Club</option>
+            <option>Longue</option>
+          </select>
           <label className="form-label">Ticket Price: </label>
           <input
             type="number"

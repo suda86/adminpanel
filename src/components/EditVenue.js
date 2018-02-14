@@ -83,7 +83,7 @@ class EditVenue extends Component {
           city: res.data.results.city,
           phoneNumber: res.data.results.phoneNumber,
           minAge: res.data.results.minAge,
-          ticket: res.data.results.ticket.amount,
+          ticket: res.data.results.ticket ? res.data.results.ticket.amount : '',
           dressCode: res.data.results.dressCode,
           description: res.data.results.description,
           workingHours: res.data.results.workingHours,
@@ -222,7 +222,7 @@ class EditVenue extends Component {
                 ref="name"
                 className="input"
                 placeholder="Name"
-                value={this.state.name}
+                value={this.state.name || ''}
                 onChange={e => this.setState({ name: e.target.value })}
               />
               <label className="form-label">Description: </label>
@@ -230,7 +230,7 @@ class EditVenue extends Component {
                 ref="description"
                 className="textarea-input"
                 placeholder="Description"
-                value={this.state.description}
+                value={this.state.description || ''}
                 onChange={e => this.setState({ description: e.target.value })}
               />
               <label className="form-label">Capacety: </label>
@@ -239,25 +239,26 @@ class EditVenue extends Component {
                 ref="capacity"
                 className="input"
                 placeholder="Capacity"
-                value={this.state.capacity}
+                value={this.state.capacity || ''}
                 onChange={e => this.setState({ capacity: e.target.value })}
               />
               <label className="form-label">Place Type: </label>
-              <input
-                type="text"
-                ref="placeType"
-                className="input"
-                placeholder="Place Type"
-                value={this.state.placeType}
-                onChange={e => this.setState({ placeType: e.target.value })}
-              />
+              
+              <select ref="placeType" className="input" value={this.state.placeType || ''} onChange={e => this.setState({placeType: e.target.value})}>
+                <option value="" disabled selected>
+                  placeType
+                </option>
+                <option>Bar</option>
+                <option>Club</option>
+                <option>Longue</option>
+              </select>
               <label className="form-label">Ticket Price: </label>
               <input
                 type="number"
                 ref="ticket"
                 className="input"
                 placeholder="Ticket Price"
-                value={this.state.ticket}
+                value={this.state.ticket || ''}
                 onChange={e => this.setState({ ticket: e.target.value })}
               />
               <label className="form-label">Min Age: </label>
@@ -266,7 +267,7 @@ class EditVenue extends Component {
                 ref="minAge"
                 className="input"
                 placeholder="Min Age"
-                value={this.state.minAge}
+                value={this.state.minAge || ''}
                 onChange={e => this.setState({ minAge: e.target.value })}
               />
               <label className="form-label">Header Image: </label>
@@ -281,7 +282,7 @@ class EditVenue extends Component {
               <select
                 ref="dressCode"
                 className="input"
-                value={this.state.dressCode}
+                value={this.state.dressCode || ''}
                 onChange={e => this.setState({ dressCode: e.target.value })}
               >
                 <option value="" disabled>
@@ -318,7 +319,7 @@ class EditVenue extends Component {
                 ref="phoneNumber"
                 className="input"
                 placeholder="Phone Number"
-                value={this.state.phoneNumber}
+                value={this.state.phoneNumber || ''}
                 onChange={e => this.setState({ phoneNumber: e.target.value })}
               />
               <label className="form-label">Website: </label>
@@ -327,7 +328,7 @@ class EditVenue extends Component {
                 ref="website"
                 className="input"
                 placeholder="Website"
-                value={this.state.website}
+                value={this.state.website || ''}
                 onChange={e => this.setState({ website: e.target.value })}
               />
               <div>
@@ -413,7 +414,7 @@ class EditVenue extends Component {
                 ref="city"
                 className="input"
                 placeholder="City"
-                value={this.state.city}
+                value={this.state.city || ''}
                 onChange={e => this.setState({ city: e.target.value })}
               />
               <label className="form-label">Zip Code: </label>
@@ -422,7 +423,7 @@ class EditVenue extends Component {
                 ref="zipcode"
                 className="input"
                 placeholder="Zip Code"
-                value={this.state.zipCode}
+                value={this.state.zipCode || ''}
                 onChange={e => this.setState({ zipCode: e.target.value })}
               />
               <input value="Save" className="submit-button" type="submit" />
