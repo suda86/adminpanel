@@ -56,7 +56,6 @@ class NewVenue extends Component {
     newVenue.minAge = this.refs.minAge.value;
     newVenue.lgbt = this.refs.lgbt.checked;
     newVenue.city = this.refs.city.value;
-    newVenue.happyHours = this.refs.happyHours.checked;
     newVenue.description = this.refs.description.value;
     newVenue.dressCode = this.refs.dressCode.value;
     newVenue.genres = this.state.genres;
@@ -169,11 +168,11 @@ class NewVenue extends Component {
           <label className="form-label">Place Type: </label>
           <select ref="placeType" className="input">
             <option value="" disabled selected>
-              placeType
+              Place Type
             </option>
-            <option>Bar</option>
-            <option>Club</option>
-            <option>Longue</option>
+            <option>bar</option>
+            <option>club</option>
+            <option>lounge</option>
           </select>
           <label className="form-label">Ticket Price: </label>
           <input
@@ -209,14 +208,6 @@ class NewVenue extends Component {
           <div className="checkbox-div">
             <label className="checkbox-label">Lgbt: </label>
             <input type="checkbox" ref="lgbt" className="checkbox-input" />
-          </div>
-          <div className="checkbox-div">
-            <label className="checkbox-label">Happy Hours: </label>
-            <input
-              type="checkbox"
-              ref="happyHours"
-              className="checkbox-input"
-            />
           </div>
           <label className="form-label">Phone Number: </label>
           <input

@@ -72,7 +72,6 @@ class EditVenue extends Component {
             ? res.data.results.capacity
             : undefined,
           placeType: res.data.results.placeType,
-          happyHours: res.data.results.happyHours,
           streetAddress: res.data.results.address
             ? res.data.results.address.streetAddress
             : 'Toronto, ON',
@@ -137,7 +136,6 @@ class EditVenue extends Component {
     newVenue.minAge = this.refs.minAge.value;
     newVenue.lgbt = this.refs.lgbt.checked;
     newVenue.city = this.refs.city.value;
-    newVenue.happyHours = this.refs.happyHours.checked;
     newVenue.description = this.refs.description.value;
     newVenue.dressCode = this.refs.dressCode.value;
     newVenue.genres = this.state.genres;
@@ -246,11 +244,11 @@ class EditVenue extends Component {
               
               <select ref="placeType" className="input" value={this.state.placeType || ''} onChange={e => this.setState({placeType: e.target.value})}>
                 <option value="" disabled selected>
-                  placeType
+                  Place Type
                 </option>
-                <option>Bar</option>
-                <option>Club</option>
-                <option>Longue</option>
+                <option>bar</option>
+                <option>club</option>
+                <option>lounge</option>
               </select>
               <label className="form-label">Ticket Price: </label>
               <input
@@ -301,16 +299,6 @@ class EditVenue extends Component {
                 placeholder="Lgbt"
                 checked={this.state.lgbt}
                 onChange={e => this.setState({ lgbt: e.target.checked })}
-                />
-              </div>
-              <div className="checkbox-div">
-                <label className="checkbox-label">Happy Hours: </label>
-                <input
-                  type="checkbox"
-                  ref="happyHours"
-                  className="checkbox-input"
-                  checked={this.state.happyHours}
-                  onChange={e => this.setState({ happyHours: e.target.checked })}
                 />
               </div>
               <label className="form-label">Phone Number: </label>
